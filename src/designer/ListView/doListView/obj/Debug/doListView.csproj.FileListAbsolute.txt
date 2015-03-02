@@ -1,0 +1,6 @@
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\bin\Debug\doUIViewDesign.ListView.dll
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\bin\Debug\doUIViewDesign.ListView.pdb
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\bin\Debug\doControlLib.dll
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\obj\Debug\doListView.csprojResolveAssemblyReference.cache
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\obj\Debug\doUIViewDesign.ListView.dll
+D:\MyWork\Designer\windows7\do-workstudio\win7src\UIControls\ListView\doListView\obj\Debug\doUIViewDesign.ListView.pdb
