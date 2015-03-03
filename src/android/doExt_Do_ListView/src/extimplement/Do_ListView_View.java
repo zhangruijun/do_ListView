@@ -121,13 +121,11 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 	@Override
 	public boolean invokeSyncMethod(String _methodName, DoJsonNode _dictParas, DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult) throws Exception {
 		if ("bindData".equals(_methodName)) {
-			List<DoJsonValue> dataArray = _dictParas.getOneArray("data");
-			myAdapter.bindData(dataArray);
+			bindData(_dictParas, _scriptEngine, _invokeResult);
 			return true;
 		}
 		if ("addData".equals(_methodName)) {
-			List<DoJsonValue> dataArray = _dictParas.getOneArray("data");
-			myAdapter.addData(dataArray);
+			addData(_dictParas, _scriptEngine, _invokeResult);
 			return true;
 		}
 		if ("getOffsetX".equals(_methodName)) {
@@ -174,15 +172,15 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 	public void onRedraw() {
 		this.setLayoutParams(DoUIModuleHelper.getLayoutParams(this.model));
 	}
-	
-	private void initViewTemplate(String data){
-		try{
+
+	private void initViewTemplate(String data) {
+		try {
 			myAdapter.initTemplates(data.split(","));
-		}catch(Exception e){
+		} catch (Exception e) {
 			DoServiceContainer.getLogEngine().writeError("解析cell属性错误： \t", e);
 		}
 	}
-	
+
 	private void doListView_Touch() {
 		DoInvokeResult _invokeResult = new DoInvokeResult(this.model.getUniqueKey());
 		this.model.getEventCenter().fireEvent("touch", _invokeResult);
@@ -192,28 +190,40 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 		DoInvokeResult _invokeResult = new DoInvokeResult(this.model.getUniqueKey());
 		this.model.getEventCenter().fireEvent("longTouch", _invokeResult);
 	}
-	
+
 	private void doListView_DisScroll() {
 		DoInvokeResult _invokeResult = new DoInvokeResult(this.model.getUniqueKey());
 		this.model.getEventCenter().fireEvent("disScroll", _invokeResult);
 	}
-	
+
 	private void doListView_EndScroll() {
 		DoInvokeResult _invokeResult = new DoInvokeResult(this.model.getUniqueKey());
 		this.model.getEventCenter().fireEvent("endScroll", _invokeResult);
 	}
-	
-	private class MyAdapter extends BaseAdapter{
+
+	@Override
+	public void bindData(DoJsonNode _dictParas, DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult) throws Exception {
+		List<DoJsonValue> dataArray = _dictParas.getOneArray("data");
+		myAdapter.bindData(dataArray);
+	}
+
+	@Override
+	public void addData(DoJsonNode _dictParas, DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult) throws Exception {
+		List<DoJsonValue> dataArray = _dictParas.getOneArray("data");
+		myAdapter.addData(dataArray);
+	}
+
+	private class MyAdapter extends BaseAdapter {
 		private Map<String, String> viewTemplates = new HashMap<String, String>();
 		private Map<String, Integer> templatesPositionMap = new HashMap<String, Integer>();
 		private Map<Integer, Integer> datasPositionMap = new HashMap<Integer, Integer>();
 		private List<DoJsonValue> data;
 
-		public MyAdapter(){
+		public MyAdapter() {
 			data = new ArrayList<DoJsonValue>();
 		}
-		
-		public void bindData(List<DoJsonValue> newData){
+
+		public void bindData(List<DoJsonValue> newData) {
 			data.clear();
 			if (newData == null) {
 				newData = new ArrayList<DoJsonValue>();
@@ -221,46 +231,46 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 			data.addAll(newData);
 			notifyDataSetChanged();
 		}
-		
-		public void addData(List<DoJsonValue> newData){
+
+		public void addData(List<DoJsonValue> newData) {
 			data.addAll(newData);
 			notifyDataSetChanged();
 		}
-		
-		public void initTemplates(String[] templates) throws Exception{
+
+		public void initTemplates(String[] templates) throws Exception {
 			templatesPositionMap.clear();
 			int index = 0;
-			for(String templateUi:templates){
-				if(templateUi != null && !templateUi.equals("")){
+			for (String templateUi : templates) {
+				if (templateUi != null && !templateUi.equals("")) {
 					DoSourceFile _sourceFile = model.getCurrentPage().getCurrentApp().getSourceFS().getSourceByFileName(templateUi);
-					if(_sourceFile != null){
+					if (_sourceFile != null) {
 						viewTemplates.put(templateUi, _sourceFile.getTxtContent());
 						templatesPositionMap.put(templateUi, index);
 						index++;
-					}else{
+					} else {
 						throw new Exception("试图使用一个无效的页面文件:" + templateUi);
 					}
 				}
 			}
 		}
-		
+
 		@Override
 		public void notifyDataSetChanged() {
 			for (int i = 0; i < data.size(); i++) {
 				DoJsonValue childData = data.get(i);
-				try{
+				try {
 					Integer index = templatesPositionMap.get(childData.getNode().getOneText("cell", ""));
-					if(index == null){
+					if (index == null) {
 						index = 0;
 					}
 					datasPositionMap.put(i, index);
-				}catch(Exception e){
+				} catch (Exception e) {
 					DoServiceContainer.getLogEngine().writeError("解析data数据错误： \t", e);
 				}
 			}
 			super.notifyDataSetChanged();
 		}
-		
+
 		@Override
 		public int getCount() {
 			return data.size();
@@ -280,49 +290,49 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 		public int getItemViewType(int position) {
 			return datasPositionMap.get(position);
 		}
-		
+
 		@Override
 		public int getViewTypeCount() {
 			return templatesPositionMap.size();
 		}
-		
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			DoJsonValue childData = data.get(position);
-			try{
-				DoIUIModuleView _doIUIModuleView = null; 
+			try {
+				DoIUIModuleView _doIUIModuleView = null;
 				String templateUI = childData.getNode().getOneText("cell", "");
 				Integer index = 0;
-					index = templatesPositionMap.get(childData.getNode().getOneText("cell", ""));
-					if(index == null){
-						index = 0;
-					}
+				index = templatesPositionMap.get(childData.getNode().getOneText("cell", ""));
+				if (index == null) {
+					index = 0;
+				}
 				if (convertView == null) {
 					String content = viewTemplates.get(templateUI);
-					
+
 					DoUIContainer _doUIContainer = new DoUIContainer(model.getCurrentPage());
 					_doUIContainer.loadFromContent(content, null, null);
-					
+
 					_doIUIModuleView = _doUIContainer.getRootView().getCurrentUIModuleView();
-				}else{
-					_doIUIModuleView = (DoIUIModuleView)convertView;
+				} else {
+					_doIUIModuleView = (DoIUIModuleView) convertView;
 				}
-				if(_doIUIModuleView != null){
+				if (_doIUIModuleView != null) {
 					DoUIContainer doUIContainer = _doIUIModuleView.getModel().getCurrentUIContainer();
-					
+
 					Map<String, DoJsonValue> mapKeyValues = childData.getNode().getAllKeyValues();
-					for(String key:mapKeyValues.keySet()){
-						if(key != null && !key.equals("cell")){
+					for (String key : mapKeyValues.keySet()) {
+						if (key != null && !key.equals("cell")) {
 							DoUIModule doUIModule = doUIContainer.getChildUIModuleByID(key);
-							if(doUIModule != null){
+							if (doUIModule != null) {
 								Map<String, String> _changedValues = new HashMap<String, String>();
-								
+
 								DoJsonValue _DoJsonValue = mapKeyValues.get(key);
 								Map<String, DoJsonValue> mapPropertyValues = _DoJsonValue.getNode().getAllKeyValues();
-								for(String propertyName:mapPropertyValues.keySet()){
+								for (String propertyName : mapPropertyValues.keySet()) {
 									_changedValues.put(propertyName, mapPropertyValues.get(propertyName).getText(""));
 								}
-								if (!doUIModule.onPropertiesChanging(_changedValues)){
+								if (!doUIModule.onPropertiesChanging(_changedValues)) {
 									continue;
 								}
 								for (String _name : _changedValues.keySet()) {
@@ -334,15 +344,15 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 							}
 						}
 					}
-					
-					return (View)_doIUIModuleView;
+
+					return (View) _doIUIModuleView;
 				}
-			}catch(Exception e){
+			} catch (Exception e) {
 				DoServiceContainer.getLogEngine().writeError("解析data数据错误： \t", e);
 			}
 			return null;
 		}
-		
+
 	}
 
 	/**
