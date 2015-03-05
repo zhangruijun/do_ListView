@@ -30,7 +30,7 @@ import extdefine.Do_ListView_MAbstract;
  * #如何调用组件自定义事件？可以通过如下方法触发事件：
  * this.model.getEventCenter().fireEvent(_messageName, jsonResult);
  * 参数解释：@_messageName字符串事件名称，@jsonResult传递事件参数对象； 获取DoInvokeResult对象方式new
- * DoInvokeResult();
+ * DoInvokeResult(this.model.getUniqueKey());
  */
 public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_ListView_IMethod {
 
@@ -147,7 +147,7 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 	 *                    _scriptEngine.callback(_callbackFuncName,
 	 *                    _invokeResult);
 	 *                    参数解释：@_callbackFuncName回调函数名，@_invokeResult传递回调函数参数对象；
-	 *                    获取DoInvokeResult对象方式new DoInvokeResult();
+	 *                    获取DoInvokeResult对象方式new DoInvokeResult(this.model.getUniqueKey());
 	 */
 	@Override
 	public boolean invokeAsyncMethod(String _methodName, DoJsonNode _dictParas, DoIScriptEngine _scriptEngine, String _callbackFuncName) {
