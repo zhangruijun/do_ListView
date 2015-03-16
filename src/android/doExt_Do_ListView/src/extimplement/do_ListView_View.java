@@ -22,8 +22,8 @@ import core.object.DoInvokeResult;
 import core.object.DoSourceFile;
 import core.object.DoUIContainer;
 import core.object.DoUIModule;
-import extdefine.Do_ListView_IMethod;
-import extdefine.Do_ListView_MAbstract;
+import extdefine.do_ListView_IMethod;
+import extdefine.do_ListView_MAbstract;
 
 /**
  * 自定义扩展UIView组件实现类，此类必须继承相应VIEW类，并实现DoIUIModuleView,Do_ListView_IMethod接口；
@@ -32,16 +32,16 @@ import extdefine.Do_ListView_MAbstract;
  * 参数解释：@_messageName字符串事件名称，@jsonResult传递事件参数对象； 获取DoInvokeResult对象方式new
  * DoInvokeResult(this.model.getUniqueKey());
  */
-public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_ListView_IMethod {
+public class do_ListView_View extends ListView implements DoIUIModuleView, do_ListView_IMethod {
 
 	/**
 	 * 每个UIview都会引用一个具体的model实例；
 	 */
-	private Do_ListView_MAbstract model;
+	private do_ListView_MAbstract model;
 
 	protected MyAdapter myAdapter;
 
-	public Do_ListView_View(Context context) {
+	public do_ListView_View(Context context) {
 		super(context);
 		myAdapter = new MyAdapter();
 	}
@@ -51,7 +51,7 @@ public class Do_ListView_View extends ListView implements DoIUIModuleView, Do_Li
 	 */
 	@Override
 	public void loadView(DoUIModule _doUIModule) throws Exception {
-		this.model = (Do_ListView_MAbstract) _doUIModule;
+		this.model = (do_ListView_MAbstract) _doUIModule;
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -4,9 +4,9 @@ import core.object.DoUIModule;
 import core.object.DoProperty;
 import core.object.DoProperty.PropertyDataType;
 
-public abstract class Do_ListView_MAbstract extends DoUIModule {
+public abstract class do_ListView_MAbstract extends DoUIModule {
 
-	protected Do_ListView_MAbstract() throws Exception {
+	protected do_ListView_MAbstract() throws Exception {
 		super();
 	}
 
