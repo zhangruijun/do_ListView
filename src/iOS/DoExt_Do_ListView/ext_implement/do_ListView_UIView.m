@@ -22,7 +22,8 @@
     UIColor *_selectColor;
     NSString *_Address;
     
-    UIView *_headView;
+    doUIModule *_headViewModel;
+    
     NSMutableArray *_dataArrays;
     NSMutableArray *_removeArrays;
     
@@ -58,8 +59,7 @@
     _Address = nil;
     [_cellDics removeAllObjects];
     _cellDics = nil;
-    [_headView removeFromSuperview];
-    _headView = nil;
+    _headViewModel = nil;
     [_dataArrays removeAllObjects];
     _dataArrays = nil;
     [_removeArrays removeAllObjects];
@@ -68,10 +68,15 @@
 //实现布局
 - (void) OnRedraw
 {
-    //实现布局相关的修改
-    
     //重新调整视图的x,y,w,h
     [doUIModuleHelper OnRedraw:_model];
+    
+    //实现布局相关的修改
+    [doUIModuleHelper OnRedraw:_headViewModel];
+    UIView *headView = (UIView *)_headViewModel.CurrentUIModuleView;
+    CGFloat realW = self.frame.size.width;
+    CGFloat realH = realW/_headViewModel.RealWidth*_headViewModel.RealHeight;
+    headView.frame = CGRectMake(0, -realH, realW, realH);
 }
 
 #pragma mark - TYPEID_IView协议方法（必须）
@@ -105,26 +110,22 @@
     }
     doUIContainer *container = [[doUIContainer alloc] init:pageModel];
     [container LoadFromFile:fileName:nil:nil];
-    doUIModule *insertViewModel = container.RootView;
-    if (insertViewModel == nil)
+    _headViewModel = container.RootView;
+    if (_headViewModel == nil)
     {
         [NSException raise:@"doLinearLayoutView" format:@"创建view失败",nil];
         return;
     }
-    _Address = [NSString stringWithFormat:@"%@",[insertViewModel UniqueKey]];
-    UIView *insertView = (UIView*)insertViewModel.CurrentUIModuleView;
+    _Address = [NSString stringWithFormat:@"%@",[_headViewModel UniqueKey]];
+    UIView *insertView = (UIView*)_headViewModel.CurrentUIModuleView;
     if (insertView == nil)
     {
         [NSException raise:@"doLinearLayoutView" format:@"创建view失败"];
         return;
     }
-    _headView = insertView;
-    CGFloat w = insertViewModel.RealWidth;
-    CGFloat h = insertViewModel.RealHeight;
-    _headView.frame = CGRectMake(0, -h, w, h);
-    [self addSubview:_headView];
-    const CGFloat *color = CGColorGetComponents([_headView.backgroundColor CGColor]);
-    self.backgroundColor = [UIColor colorWithRed:color[0]/255 green:color[1]/255 blue:color[3]/255 alpha:color[4]/255];
+    [self addSubview:insertView];
+    //const CGFloat *color = CGColorGetComponents([_headView.backgroundColor CGColor]);
+    //self.backgroundColor = [UIColor colorWithRed:color[0]/255 green:color[1]/255 blue:color[3]/255 alpha:color[4]/255];
 }
 
 #pragma mark -
@@ -401,6 +402,7 @@
 #pragma mark - scrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    UIView *_headView = (UIView *)_headViewModel.CurrentUIModuleView;
     if(_headView && !_isRefreshing)
     {
         if(scrollView.contentOffset.y >= _headView.frame.size.height*(-1))
@@ -413,6 +415,7 @@
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    UIView *_headView = (UIView *)_headViewModel.CurrentUIModuleView;
     if(scrollView.contentOffset.y < _headView.frame.size.height*(-1) && !_isRefreshing && _headView)
     {
         [self fireEvent:2 :scrollView.contentOffset.y];
