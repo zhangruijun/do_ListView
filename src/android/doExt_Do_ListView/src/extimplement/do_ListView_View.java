@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -46,6 +47,11 @@ public class do_ListView_View extends ListView implements DoIUIModuleView, do_Li
 		myAdapter = new MyAdapter();
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		return super.onTouchEvent(ev);
+	}
+	
 	/**
 	 * 初始化加载view准备,_doUIModule是对应当前UIView的model实例
 	 */
@@ -163,7 +169,6 @@ public class do_ListView_View extends ListView implements DoIUIModuleView, do_Li
 		// ...do something
 	}
 
-	// =========================================================================
 	/**
 	 * 重绘组件，构造组件时由系统框架自动调用；
 	 * 或者由前端JS脚本调用组件onRedraw方法时被调用（注：通常是需要动态改变组件（X、Y、Width、Height）属性时手动调用）
@@ -309,10 +314,9 @@ public class do_ListView_View extends ListView implements DoIUIModuleView, do_Li
 				}
 				if (convertView == null) {
 					String content = viewTemplates.get(templateUI);
-
 					DoUIContainer _doUIContainer = new DoUIContainer(model.getCurrentPage());
 					_doUIContainer.loadFromContent(content, null, null);
-
+					_doUIContainer.loadDefalutScriptFile(templateUI);//@zhuozy效率问题，listview第一屏可能要加载多次模版、脚本，需改进需求设计；
 					_doIUIModuleView = _doUIContainer.getRootView().getCurrentUIModuleView();
 				} else {
 					_doIUIModuleView = (DoIUIModuleView) convertView;
