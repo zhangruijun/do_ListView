@@ -261,7 +261,8 @@ public class do_ListView_View extends ListView implements DoIUIModuleView, do_Li
 
 		@Override
 		public void notifyDataSetChanged() {
-			for (int i = 0; i < data.size(); i++) {
+			int _size = data.size();
+			for (int i = 0; i < _size; i++) {
 				DoJsonValue childData = data.get(i);
 				try {
 					Integer index = templatesPositionMap.get(childData.getNode().getOneText("cell", ""));
