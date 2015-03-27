@@ -1,6 +1,0 @@
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\bin\Debug\doControlLib.dll
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\obj\Debug\do_ListView.csprojResolveAssemblyReference.cache
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\bin\Debug\doUIViewDesign.do_ListView.dll
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\bin\Debug\doUIViewDesign.do_ListView.pdb
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\obj\Debug\doUIViewDesign.do_ListView.dll
-D:\MyWork\designer_comp\do_ListView\src\designer\do_ListView\do_ListView\obj\Debug\doUIViewDesign.do_ListView.pdb
