@@ -7,6 +7,6 @@
 //
 #import "doUIModule.h"
 
-@interface DoExt_ListView_UIModel : doUIModule
+@interface do_ListView_UIModel : doUIModule
 
 @end

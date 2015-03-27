@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol DoExt_ListView_IView <NSObject>
+@protocol do_ListView_IView <NSObject>
 
 @required
 //属性方法

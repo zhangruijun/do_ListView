@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DoExt_ListView_IView.h"
-#import "DoExt_ListView_UIModel.h"
+#import "do_ListView_IView.h"
+#import "do_ListView_UIModel.h"
 #import "doIUIModuleView.h"
 
-@interface DoExt_ListView_UIView : UITableView<DoExt_ListView_IView,doIUIModuleView,UITableViewDataSource,UITableViewDelegate>
+@interface do_ListView_UIView : UITableView<do_ListView_IView,doIUIModuleView,UITableViewDataSource,UITableViewDelegate>
 //可根据具体实现替换UIView
 {
     @private
-    __weak DoExt_ListView_UIModel *_model;
+    __weak do_ListView_UIModel *_model;
 }
 
 @end
